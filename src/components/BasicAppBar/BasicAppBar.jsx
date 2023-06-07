@@ -4,6 +4,7 @@ import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
 
 import "./BasicAppBar.scss";
 
@@ -20,8 +21,8 @@ function BasicAppBar() {
           >
             Notes
           </Typography>
-          <Button color="inherit" className="btn-add">
-            New note
+          <Button color="inherit" variant="outlined" startIcon={<AddIcon />}>
+            add note
           </Button>
         </Toolbar>
       </Container>
