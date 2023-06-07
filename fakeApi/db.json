@@ -1,4 +1,33 @@
 {
-  "notes": [],
+  "notes": [
+    {
+      "id": 1,
+      "name": "Test note 1"
+    },
+    {
+      "id": 2,
+      "name": "Test note 2"
+    },
+    {
+      "id": 3,
+      "name": "Test note 3"
+    },
+    {
+      "id": 4,
+      "name": "Test note 4"
+    },
+    {
+      "id": 5,
+      "name": "Test note 5"
+    },
+    {
+      "id": 6,
+      "name": "Test note 6"
+    },
+    {
+      "id": 7,
+      "name": "Test note 7"
+    }
+  ],
   "categories": []
 }
