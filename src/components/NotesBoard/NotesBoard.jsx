@@ -16,8 +16,8 @@ function NotesBoard({ notes }) {
         spacing={{ xs: 2, md: 3 }}
         columns={{ xs: 3, sm: 9, md: 12 }}
       >
-        {notes.map((note, index) => (
-          <Grid xs={3} sm={3} md={3} key={index}>
+        {notes.map((note) => (
+          <Grid xs={3} sm={3} md={3} key={note.id}>
             <NoteCard note={note} />
           </Grid>
         ))}
@@ -27,13 +27,3 @@ function NotesBoard({ notes }) {
 }
 
 export default NotesBoard;
-
-{
-  /* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 3, sm: 9, md: 12 }}>
-  {notes.map((_, index) => (
-    <Grid xs={3} sm={3} md={3} key={index}>
-      <Item>xs={index}</Item>
-    </Grid>
-  ))}
-</Grid>; */
-}

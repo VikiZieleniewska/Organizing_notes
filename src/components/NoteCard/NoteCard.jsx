@@ -3,26 +3,44 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 function NoteCard({ note }) {
   return (
     <Card>
       <CardHeader
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <>
+            <IconButton aria-label="edit">
+              <EditIcon />
+            </IconButton>
+            <IconButton aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          </>
         }
-        title={note.name}
+        title={note.title}
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
+        <List>
+          {note.tasks.map((task) => (
+            <ListItem disablePadding key={task.id}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <CheckCircleOutlineIcon />
+                </ListItemIcon>
+                <ListItemText primary={task.description} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
       </CardContent>
     </Card>
   );

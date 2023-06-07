@@ -28,7 +28,6 @@ function App() {
     <>
       <BasicAppBar />
       <NotesBoard notes={notes} />
-      {/* <div>Hello World!</div> */}
     </>
   );
 }
