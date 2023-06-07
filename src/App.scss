@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Charmonman:wght@400;700&family=Open+Sans:wght@400;700;800&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  background: lightblue;
+  color: white;
+
+  font-size: 16px;
+  width: 100%;
+  // margin: 40px;
+
+  @media (min-width: 1024px) {
+    width: 100%;
+    margin: auto;
+    // padding: 24px;
+  }
+
+  @media (max-width: 1023px) {
+    width: 100%;
+    margin: auto;
+    // padding: 24px;
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    margin: auto;
+    // padding: 24px;
+  }
+}
