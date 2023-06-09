@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Button, TextField, Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -9,11 +9,16 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";
+import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import ErrorIcon from "@mui/icons-material/Error";
 
 export default class NoteCard extends Component {
   state = {
@@ -21,13 +26,26 @@ export default class NoteCard extends Component {
     isEditMode: false,
   };
 
-  // componentDidUpdate() {}
-
   toggleEditMode = () => this.setState({ isEditMode: !this.state.isEditMode });
 
   handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`submitted form`);
+    const response = await fetch(
+      `http://localhost:3000/notes/${this.state.note.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.state.note),
+      }
+    );
+
+    if (response.ok) {
+      this.setState({
+        isEditMode: false,
+      });
+    }
   };
 
   handleCancel = () => {
@@ -39,8 +57,8 @@ export default class NoteCard extends Component {
     });
   };
 
-  handleDelete = async (event) => {
-    console.log(`note deleted`);
+  handleDelete = async () => {
+    await this.props.onDelete(this.props.note.id);
   };
 
   render() {
@@ -80,10 +98,60 @@ export default class NoteCard extends Component {
             <CardContent>
               <List>
                 {this.state.note.tasks.map((task) => (
-                  <ListItem disablePadding key={task.id}>
+                  <ListItem
+                    disablePadding
+                    key={task.id}
+                    secondaryAction={
+                      <IconButton
+                        aria-label="delete task"
+                        edge="end"
+                        onClick={() => {
+                          const updatedTasks = [...this.state.note.tasks];
+                          const filteredTasks = updatedTasks.filter(
+                            (el) => el.id !== task.id
+                          );
+
+                          this.setState({
+                            note: {
+                              ...this.state.note,
+                              tasks: filteredTasks,
+                            },
+                          });
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    }
+                  >
+                    <IconButton
+                      onClick={(event) => {
+                        const updatedTasks = [...this.state.note.tasks];
+                        const currentStatus = updatedTasks.find(
+                          (el) => el.id === task.id
+                        ).isImportant;
+
+                        updatedTasks.find(
+                          (el) => el.id === task.id
+                        ).isImportant = !currentStatus;
+
+                        this.setState({
+                          note: {
+                            ...this.state.note,
+                            tasks: updatedTasks,
+                          },
+                        });
+                      }}
+                    >
+                      {task.isImportant ? (
+                        <ErrorIcon color="error" />
+                      ) : (
+                        <ErrorOutlineIcon />
+                      )}
+                    </IconButton>
                     <TextField
                       id={`task-${task.id}`}
                       variant="standard"
+                      // multiline
                       fullWidth
                       value={task.description}
                       onChange={(event) => {
@@ -103,6 +171,36 @@ export default class NoteCard extends Component {
                     />
                   </ListItem>
                 ))}
+                <ListItem
+                  disablePadding
+                  key="add-task"
+                  sx={{ justifyContent: "center" }}
+                >
+                  <Button
+                    size="small"
+                    startIcon={<AddIcon />}
+                    onClick={() => {
+                      const updatedTasks = [...this.state.note.tasks];
+                      const lastId = Math.max(...updatedTasks.map((t) => t.id));
+                      const emptyTask = {
+                        id: lastId + 1,
+                        description: "",
+                        isDone: false,
+                      };
+
+                      updatedTasks.push(emptyTask);
+
+                      this.setState({
+                        note: {
+                          ...this.state.note,
+                          tasks: updatedTasks,
+                        },
+                      });
+                    }}
+                  >
+                    Add Task
+                  </Button>
+                </ListItem>
               </List>
             </CardContent>
           </form>
@@ -129,11 +227,38 @@ export default class NoteCard extends Component {
           <List>
             {this.state.note.tasks.map((task) => (
               <ListItem disablePadding key={task.id}>
-                <ListItemButton>
+                <ListItemButton
+                  onClick={(event) => {
+                    const updatedTasks = [...this.state.note.tasks];
+                    const currentStatus = updatedTasks.find(
+                      (el) => el.id === task.id
+                    ).isDone;
+                    updatedTasks.find((el) => el.id === task.id).isDone =
+                      !currentStatus;
+
+                    this.setState({
+                      note: {
+                        ...this.state.note,
+                        tasks: updatedTasks,
+                      },
+                    });
+                  }}
+                >
                   <ListItemIcon>
-                    <CheckCircleOutlineIcon />
+                    {task.isDone ? (
+                      <CheckCircleIcon color="success" />
+                    ) : task.isImportant ? (
+                      <CheckCircleOutlineIcon color="error" />
+                    ) : (
+                      <CheckCircleOutlineIcon />
+                    )}
                   </ListItemIcon>
-                  <ListItemText primary={task.description} />
+                  <ListItemText
+                    primary={task.description}
+                    sx={{
+                      textDecoration: task.isDone ? "line-through" : "none",
+                    }}
+                  />
                 </ListItemButton>
               </ListItem>
             ))}

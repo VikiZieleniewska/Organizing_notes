@@ -24,10 +24,35 @@ function App() {
     return await response.json();
   }
 
+  async function handleDelete(noteId) {
+    if (noteId === null || noteId === undefined) {
+      console.error("NoteID is required");
+
+      return;
+    }
+
+    if (noteId === 0) {
+      setNotes(notes.filter((n) => n.id !== noteId));
+
+      return;
+    }
+
+    const response = await fetch(`http://localhost:3000/notes/${noteId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      setNotes(notes.filter((n) => n.id !== noteId));
+    }
+  }
+
   return (
     <>
       <BasicAppBar />
-      <NotesBoard notes={notes} />
+      <NotesBoard notes={notes} onDelete={handleDelete} />
     </>
   );
 }

@@ -4,7 +4,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 
 import NoteCard from "../NoteCard/NoteCard.jsx";
 
-function NotesBoard({ notes }) {
+function NotesBoard({ notes, onDelete }) {
   if (!notes) {
     return <h1>Notes loading</h1>;
   }
@@ -14,11 +14,11 @@ function NotesBoard({ notes }) {
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 3, sm: 9, md: 12 }}
+        columns={{ xs: 12, sm: 12, md: 12 }}
       >
         {notes.map((note) => (
-          <Grid xs={3} sm={3} md={3} key={note.id}>
-            <NoteCard note={note} />
+          <Grid xs={12} sm={6} md={4} key={note.id}>
+            <NoteCard note={note} onDelete={onDelete} />
           </Grid>
         ))}
       </Grid>
