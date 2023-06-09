@@ -18,7 +18,7 @@ function NotesBoard({ notes, onDelete }) {
       >
         {notes.map((note) => (
           <Grid xs={12} sm={6} md={4} key={note.id}>
-            <NoteCard note={note} onDelete={onDelete} />
+            <NoteCard note={note} isEditMode={!note.id} onDelete={onDelete} />
           </Grid>
         ))}
       </Grid>

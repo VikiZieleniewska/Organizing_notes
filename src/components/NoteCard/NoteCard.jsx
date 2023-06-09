@@ -23,28 +23,61 @@ import ErrorIcon from "@mui/icons-material/Error";
 export default class NoteCard extends Component {
   state = {
     note: JSON.parse(JSON.stringify(this.props.note)),
-    isEditMode: false,
+    isEditMode: this.props.isEditMode,
+    isAddMode: this.props.isEditMode && !this.props.note.id,
   };
 
   toggleEditMode = () => this.setState({ isEditMode: !this.state.isEditMode });
 
-  handleSubmit = async (event) => {
-    event.preventDefault();
-    const response = await fetch(
-      `http://localhost:3000/notes/${this.state.note.id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.state.note),
-      }
-    );
+  addNoteApi = async (note) => {
+    return await fetch(`http://localhost:3000/notes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
+  };
 
+  editNoteApi = async (note) => {
+    return await fetch(`http://localhost:3000/notes/${note.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
+  };
+
+  handleAddNote = async () => {
+    const response = await this.addNoteApi(this.state.note);
+    if (response.ok) {
+      const newNote = await response.json();
+      this.setState({
+        note: newNote,
+        isEditMode: false,
+        isAddMode: false,
+      });
+    }
+  };
+
+  handleEditNote = async () => {
+    const response = await this.editNoteApi(this.state.note);
     if (response.ok) {
       this.setState({
         isEditMode: false,
+        isAddMode: false,
       });
+    }
+  };
+
+  handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (this.state.isAddMode) {
+      this.handleAddNote();
+    } else {
+      this.handleEditNote();
     }
   };
 
@@ -55,10 +88,14 @@ export default class NoteCard extends Component {
       },
       isEditMode: false,
     });
+
+    if (this.state.isAddMode) {
+      this.handleDelete();
+    }
   };
 
-  handleDelete = async () => {
-    await this.props.onDelete(this.props.note.id);
+  handleDelete = () => {
+    this.props.onDelete(this.props.note.id);
   };
 
   render() {
@@ -242,6 +279,8 @@ export default class NoteCard extends Component {
                         tasks: updatedTasks,
                       },
                     });
+
+                    this.handleEditNote();
                   }}
                 >
                   <ListItemIcon>

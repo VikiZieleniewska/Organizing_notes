@@ -24,6 +24,15 @@ function App() {
     return await response.json();
   }
 
+  function handleAddNote() {
+    const emptyNote = {
+      id: 0,
+      title: "",
+      tasks: [],
+    };
+    setNotes([emptyNote, ...notes]);
+  }
+
   async function handleDelete(noteId) {
     if (noteId === null || noteId === undefined) {
       console.error("NoteID is required");
@@ -51,7 +60,7 @@ function App() {
 
   return (
     <>
-      <BasicAppBar />
+      <BasicAppBar onAddNote={handleAddNote} />
       <NotesBoard notes={notes} onDelete={handleDelete} />
     </>
   );
