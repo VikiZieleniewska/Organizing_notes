@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 
 import BasicAppBar from "./components/BasicAppBar/BasicAppBar";
 import NotesBoard from "./components/NotesBoard/NotesBoard";
+import NoteSearch from "./components/NoteSearch/NoteSearch";
 
 import "./App.scss";
 
 function App() {
   const [notes, setNotes] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -31,6 +33,10 @@ function App() {
       tasks: [],
     };
     setNotes([emptyNote, ...notes]);
+  }
+
+  function handleSearch(searchText) {
+    setSearch(searchText);
   }
 
   async function handleDelete(noteId) {
@@ -61,7 +67,8 @@ function App() {
   return (
     <>
       <BasicAppBar onAddNote={handleAddNote} />
-      <NotesBoard notes={notes} onDelete={handleDelete} />
+      <NoteSearch search={search} onSearch={handleSearch} />
+      <NotesBoard notes={notes} search={search} onDelete={handleDelete} />
     </>
   );
 }
