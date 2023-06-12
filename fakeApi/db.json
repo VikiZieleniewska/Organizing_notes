@@ -2,6 +2,7 @@
   "notes": [
     {
       "id": 1,
+      "categoryId": 1,
       "title": "Test note 1",
       "tasks": [
         {
@@ -38,7 +39,8 @@
           "description": "Test task 2",
           "isDone": true
         }
-      ]
+      ],
+      "categoryId": ""
     },
     {
       "id": 3,
@@ -64,7 +66,8 @@
           "description": "Test task 4",
           "isDone": false
         }
-      ]
+      ],
+      "categoryId": ""
     },
     {
       "id": 4,
@@ -80,7 +83,8 @@
           "description": "Test task 2",
           "isDone": false
         }
-      ]
+      ],
+      "categoryId": 3
     },
     {
       "id": 5,
@@ -91,24 +95,49 @@
           "description": "test 34243",
           "isDone": false
         }
-      ]
+      ],
+      "categoryId": ""
     },
     {
       "id": 6,
-      "title": "utdfu",
+      "categoryId": 2,
+      "title": "test 222",
       "tasks": []
+    },
+    {
+      "id": 7,
+      "categoryId": 4,
+      "title": "test 33232",
+      "tasks": [
+        {
+          "id": null,
+          "description": "exam tomorrow",
+          "isDone": false,
+          "isImportant": true
+        }
+      ]
     }
   ],
   "categories": [
     {
       "id": 1,
       "name": "Shopping",
-      "color": "orange"
+      "color": "#e3f2fd"
     },
     {
       "id": 2,
       "name": "Housekeeping",
-      "color": "green"
+      "color": "#fff3e0"
+    },
+    {
+      "id": 3,
+      "name": "Travel",
+      "color": "#e8f5e9"
+    },
+    {
+      "id": 4,
+      "name": "Children School",
+      "color": "#f3e5f5"
     }
   ]
 }

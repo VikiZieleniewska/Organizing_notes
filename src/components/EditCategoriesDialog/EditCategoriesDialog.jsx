@@ -1,18 +1,13 @@
 import React, { Component } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import TextField from "@mui/material/TextField";
-// import EditCategoryIcon from "@mui/icons-material/EditCategory";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -207,29 +202,23 @@ export default class EditCategoriesDialog extends Component {
                         this.props.updateCategories(updatedCategories);
                       }}
                     >
-                      <MenuItem value={"red"}>
-                        <SquareIcon sx={{ color: "red", opacity: ".75" }} />
+                      <MenuItem value={"#ffebee"}>
+                        <SquareIcon sx={{ color: "#ffcdd2" }} />
                       </MenuItem>
-                      <MenuItem value={"blue"}>
-                        <SquareIcon sx={{ color: "blue", opacity: ".75" }} />
+                      <MenuItem value={"#e3f2fd"}>
+                        <SquareIcon sx={{ color: "#bbdefb" }} />
                       </MenuItem>
-                      <MenuItem value={"orange"}>
-                        <SquareIcon sx={{ color: "orange", opacity: ".75" }} />
+                      <MenuItem value={"#fff3e0"}>
+                        <SquareIcon sx={{ color: "#ffe0b2" }} />
                       </MenuItem>
-                      <MenuItem value={"yellow"}>
-                        <SquareIcon sx={{ color: "yellow", opacity: ".75" }} />
+                      <MenuItem value={"#fffde7"}>
+                        <SquareIcon sx={{ color: "#fff9c4" }} />
                       </MenuItem>
-                      <MenuItem value={"green"}>
-                        <SquareIcon sx={{ color: "green", opacity: ".75" }} />
+                      <MenuItem value={"#e8f5e9"}>
+                        <SquareIcon sx={{ color: "#c8e6c9" }} />
                       </MenuItem>
-                      <MenuItem value={"magenta"}>
-                        <SquareIcon sx={{ color: "magenta", opacity: ".75" }} />
-                      </MenuItem>
-                      <MenuItem value={"purple"}>
-                        <SquareIcon sx={{ color: "purple", opacity: ".75" }} />
-                      </MenuItem>
-                      <MenuItem value={"cyan"}>
-                        <SquareIcon sx={{ color: "cyan", opacity: ".75" }} />
+                      <MenuItem value={"#f3e5f5"}>
+                        <SquareIcon sx={{ color: "#e1bee7" }} />
                       </MenuItem>
                     </Select>
                     <TextField
@@ -250,9 +239,7 @@ export default class EditCategoriesDialog extends Component {
                   </>
                 ) : (
                   <>
-                    <SquareIcon
-                      sx={{ color: category.color, opacity: ".75", mr: 2 }}
-                    />
+                    <SquareIcon sx={{ color: category.color, mr: 2 }} />
                     <ListItemText primary={category.name} />
                   </>
                 )}

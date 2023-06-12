@@ -46,6 +46,7 @@ function App() {
   function handleAddNote() {
     const emptyNote = {
       id: 0,
+      categoryId: "",
       title: "",
       tasks: [],
     };
@@ -93,7 +94,12 @@ function App() {
         onAddNote={handleAddNote}
       />
       <NoteSearch search={search} onSearch={handleSearch} />
-      <NotesBoard notes={notes} search={search} onDelete={handleDelete} />
+      <NotesBoard
+        notes={notes}
+        categories={categories}
+        search={search}
+        onDelete={handleDelete}
+      />
     </>
   );
 }

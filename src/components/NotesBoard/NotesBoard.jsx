@@ -6,7 +6,7 @@ import NoteCard from "../NoteCard/NoteCard.jsx";
 
 export default class NotesBoard extends Component {
   render() {
-    const { notes, search, onDelete } = this.props;
+    const { notes, categories, search, onDelete } = this.props;
     if (!notes) {
       return <h1>Notes loading</h1>;
     }
@@ -26,11 +26,18 @@ export default class NotesBoard extends Component {
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 12, sm: 12, md: 12 }}
         >
-          {filteredNotes.map((note) => (
-            <Grid xs={12} sm={6} md={4} key={note.id}>
-              <NoteCard note={note} isEditMode={!note.id} onDelete={onDelete} />
-            </Grid>
-          ))}
+          {filteredNotes.map((note) => {
+            return (
+              <Grid xs={12} sm={6} md={4} key={note.id}>
+                <NoteCard
+                  note={note}
+                  categories={categories}
+                  isEditMode={!note.id}
+                  onDelete={onDelete}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </Container>
     );

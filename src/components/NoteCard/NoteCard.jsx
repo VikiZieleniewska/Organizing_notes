@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Select } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -18,6 +18,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ErrorIcon from "@mui/icons-material/Error";
+import SquareIcon from "@mui/icons-material/Square";
+import MenuItem from "@mui/material/MenuItem";
 
 export default class NoteCard extends Component {
   state = {
@@ -98,9 +100,17 @@ export default class NoteCard extends Component {
   };
 
   render() {
+    const category = this.props.categories.find(
+      (c) => c.id === this.state.note.categoryId
+    );
+
     if (this.state.isEditMode) {
       return (
-        <Card>
+        <Card
+          sx={{
+            backgroundColor: category ? category.color : "white",
+          }}
+        >
           <form onSubmit={this.handleSubmit}>
             <CardHeader
               action={
@@ -129,6 +139,34 @@ export default class NoteCard extends Component {
                   }}
                   // sx={{ marginBottom: "20px" }}
                 />
+              }
+              subheader={
+                <Select
+                  id="subheader"
+                  variant="standard"
+                  fullWidth
+                  value={this.state.note.categoryId}
+                  onChange={(event) => {
+                    this.setState({
+                      note: {
+                        ...this.state.note,
+                        categoryId: event.target.value,
+                      },
+                    });
+                  }}
+                >
+                  <MenuItem key="no-category" value="">
+                    <ListItemText primary="No Category" />
+                  </MenuItem>
+                  {this.props.categories.map((c) => (
+                    <MenuItem
+                      key={`${this.state.note.id}-${c.id}`}
+                      value={c.id}
+                    >
+                      <ListItemText primary={c.name} />
+                    </MenuItem>
+                  ))}
+                </Select>
               }
             />
             <CardContent>
@@ -245,7 +283,11 @@ export default class NoteCard extends Component {
     }
 
     return (
-      <Card>
+      <Card
+        sx={{
+          backgroundColor: category ? category.color : "white",
+        }}
+      >
         <CardHeader
           action={
             <>
@@ -258,6 +300,7 @@ export default class NoteCard extends Component {
             </>
           }
           title={this.state.note.title}
+          subheader={category ? category.name : "No Category"}
         />
         <CardContent>
           <List>
