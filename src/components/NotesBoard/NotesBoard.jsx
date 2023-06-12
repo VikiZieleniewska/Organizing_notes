@@ -1,29 +1,45 @@
-import React from "react";
+import React, { Component } from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2";
 
 import NoteCard from "../NoteCard/NoteCard.jsx";
 
-function NotesBoard({ notes }) {
-  if (!notes) {
-    return <h1>Notes loading</h1>;
+export default class NotesBoard extends Component {
+  render() {
+    const { notes, categories, search, onDelete } = this.props;
+    if (!notes) {
+      return <h1>Notes loading</h1>;
+    }
+
+    const filteredNotes = notes.filter(
+      (note) =>
+        note.title.toLowerCase().includes(search.toLowerCase()) ||
+        note.tasks.some((task) =>
+          task.description.toLowerCase().includes(search.toLowerCase())
+        )
+    );
+
+    return (
+      <Container maxWidth="xl">
+        <Grid
+          container
+          spacing={{ xs: 2, md: 3 }}
+          columns={{ xs: 12, sm: 12, md: 12 }}
+        >
+          {filteredNotes.map((note) => {
+            return (
+              <Grid xs={12} sm={6} md={4} key={note.id}>
+                <NoteCard
+                  note={note}
+                  categories={categories}
+                  isEditMode={!note.id}
+                  onDelete={onDelete}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
+    );
   }
-
-  return (
-    <Container maxWidth="xl">
-      <Grid
-        container
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 3, sm: 9, md: 12 }}
-      >
-        {notes.map((note) => (
-          <Grid xs={3} sm={3} md={3} key={note.id}>
-            <NoteCard note={note} />
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
-  );
 }
-
-export default NotesBoard;
