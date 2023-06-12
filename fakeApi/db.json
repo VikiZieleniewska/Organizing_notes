@@ -99,5 +99,16 @@
       "tasks": []
     }
   ],
-  "categories": []
+  "categories": [
+    {
+      "id": 1,
+      "name": "Shopping",
+      "color": "orange"
+    },
+    {
+      "id": 2,
+      "name": "Housekeeping",
+      "color": "green"
+    }
+  ]
 }

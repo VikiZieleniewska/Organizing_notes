@@ -9,6 +9,7 @@ import "./App.scss";
 function App() {
   const [notes, setNotes] = useState([]);
   const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -26,6 +27,22 @@ function App() {
     return await response.json();
   }
 
+  useEffect(() => {
+    const controller = new AbortController();
+    getCategories(controller.signal).then((data) => setCategories(data));
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  async function getCategories(signal) {
+    const response = await fetch("http://localhost:3000/categories", {
+      signal,
+    });
+    return await response.json();
+  }
+
   function handleAddNote() {
     const emptyNote = {
       id: 0,
@@ -33,6 +50,10 @@ function App() {
       tasks: [],
     };
     setNotes([emptyNote, ...notes]);
+  }
+
+  function handleUpdateCategories(updatedCategories) {
+    setCategories(updatedCategories);
   }
 
   function handleSearch(searchText) {
@@ -66,7 +87,11 @@ function App() {
 
   return (
     <>
-      <BasicAppBar onAddNote={handleAddNote} />
+      <BasicAppBar
+        categories={categories}
+        onUpdateCategories={handleUpdateCategories}
+        onAddNote={handleAddNote}
+      />
       <NoteSearch search={search} onSearch={handleSearch} />
       <NotesBoard notes={notes} search={search} onDelete={handleDelete} />
     </>
