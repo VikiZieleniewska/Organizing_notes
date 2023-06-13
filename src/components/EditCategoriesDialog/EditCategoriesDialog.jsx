@@ -153,6 +153,7 @@ export default class EditCategoriesDialog extends Component {
                     <>
                       <IconButton
                         aria-label="save"
+                        disabled={!category.name.trim() || !category.color}
                         onClick={(event) =>
                           this.handleSubmit(event, category.id)
                         }
@@ -170,12 +171,14 @@ export default class EditCategoriesDialog extends Component {
                     <>
                       <IconButton
                         aria-label="edit"
+                        disabled={!!this.state.editedCategory}
                         onClick={() => this.setEditMode(category)}
                       >
                         <EditIcon />
                       </IconButton>
                       <IconButton
                         aria-label="delete"
+                        disabled={!!this.state.editedCategory}
                         onClick={() => this.handleDelete(category.id)}
                       >
                         <DeleteIcon />
@@ -192,6 +195,7 @@ export default class EditCategoriesDialog extends Component {
                       aria-label="category color"
                       value={category.color}
                       variant="standard"
+                      error={!category.color}
                       sx={{ mr: 2 }}
                       onChange={(event) => {
                         const updatedCategories = [...this.props.categories];
@@ -227,6 +231,10 @@ export default class EditCategoriesDialog extends Component {
                       variant="standard"
                       fullWidth
                       value={category.name}
+                      error={!category.name.trim()}
+                      placeholder={
+                        !category.name.trim() ? "Category name is required" : ""
+                      }
                       onChange={(event) => {
                         const updatedCategories = [...this.props.categories];
                         updatedCategories.find(

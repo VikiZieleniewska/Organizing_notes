@@ -3,9 +3,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import ListItemText from "@mui/material/ListItemText";
 
-export default class CategoryFilter extends Component {
-  handleSearch = (categoryId) => {
-    this.props.onSearch({ ...this.props.search, selectedCategory: categoryId });
+export default class ImportanceFilter extends Component {
+  handleSearch = (importance) => {
+    this.props.onSearch({ ...this.props.search, importance: importance });
   };
 
   render() {
@@ -17,17 +17,18 @@ export default class CategoryFilter extends Component {
           sx={{ ml: 2 }}
           size="small"
           disabled={this.props.addingInProgress}
-          value={this.props.search.selectedCategory}
+          value={this.props.search.importance}
           onChange={(event) => this.handleSearch(event.target.value)}
         >
-          <MenuItem key="any-category" value="">
-            <ListItemText primary="Any Category" />
+          <MenuItem value="">
+            <ListItemText primary="Any Importance" />
           </MenuItem>
-          {this.props.categories.map((c) => (
-            <MenuItem key={`filter-${c.id}`} value={c.id}>
-              <ListItemText primary={c.name} />
-            </MenuItem>
-          ))}
+          <MenuItem value="Important">
+            <ListItemText primary="Important" />
+          </MenuItem>
+          <MenuItem value="Not Important">
+            <ListItemText primary="Not Important" />
+          </MenuItem>
         </Select>
       </>
     );

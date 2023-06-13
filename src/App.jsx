@@ -11,8 +11,11 @@ function App() {
   const [search, setSearch] = useState({
     searchText: "",
     selectedCategory: "",
+    importance: "",
+    status: "",
   });
   const [categories, setCategories] = useState([]);
+  const [addingInProgress, setAddingInProgress] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -46,16 +49,30 @@ function App() {
     return await response.json();
   }
 
-  // useEffect(() => setSearch({ searchText: "", selectedCategory: "" }));
-
   function handleAddNote() {
     const emptyNote = {
       id: 0,
       categoryId: "",
       title: "",
-      tasks: [],
+      tasks: [
+        {
+          id: 1,
+          description: "",
+          isDone: false,
+          isImportant: false,
+        },
+      ],
     };
     setNotes([emptyNote, ...notes]);
+    setAddingInProgress(true);
+  }
+
+  function handleSubmitNote(note) {
+    const index = notes.findIndex((el) => el.id === 0);
+    notes[index] = note;
+
+    setNotes([...notes]);
+    setAddingInProgress(false);
   }
 
   function handleEditNote(note) {
@@ -82,6 +99,7 @@ function App() {
 
     if (noteId === 0) {
       setNotes(notes.filter((n) => n.id !== noteId));
+      setAddingInProgress(false);
 
       return;
     }
@@ -104,16 +122,19 @@ function App() {
         categories={categories}
         onUpdateCategories={handleUpdateCategories}
         onAddNote={handleAddNote}
+        addingInProgress={addingInProgress}
       />
       <NoteSearch
         categories={categories}
         search={search}
         onSearch={handleSearch}
+        addingInProgress={addingInProgress}
       />
       <NotesBoard
         notes={notes}
         categories={categories}
         search={search}
+        onAddNote={handleSubmitNote}
         onEditNote={handleEditNote}
         onDelete={handleDelete}
       />

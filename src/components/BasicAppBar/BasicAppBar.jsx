@@ -103,7 +103,10 @@ export default class BasicAppBar extends Component {
         open={isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem onClick={this.handleAddNote}>
+        <MenuItem
+          onClick={this.handleAddNote}
+          disabled={this.props.addingInProgress}
+        >
           <AddIcon sx={{ mr: 2 }} />
           <p>Add Note</p>
         </MenuItem>
@@ -135,6 +138,7 @@ export default class BasicAppBar extends Component {
               variant="outlined"
               startIcon={<AddIcon />}
               sx={{ display: { xs: "none", md: "flex" }, ml: 2 }}
+              disabled={this.props.addingInProgress}
               onClick={this.handleAddNote}
             >
               add note

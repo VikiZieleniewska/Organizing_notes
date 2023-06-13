@@ -7,6 +7,8 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
 import CategoryFilter from "../CategoryFilter/CategoryFilter";
+import ImportanceFilter from "../ImportanceFilter/ImportanceFilter";
+import StatusFilter from "../StatusFilter/StatusFilter";
 
 import "./NoteSearch.scss";
 
@@ -16,7 +18,7 @@ export default class NoteSearch extends Component {
   };
 
   render() {
-    const { search, onSearch, categories } = this.props;
+    const { search, onSearch, categories, addingInProgress } = this.props;
 
     return (
       <AppBar position="static" className="filter-bar">
@@ -27,6 +29,7 @@ export default class NoteSearch extends Component {
               placeholder="Search…"
               value={search.searchText}
               size="small"
+              disabled={addingInProgress}
               onChange={(event) => this.handleSearch(event.target.value)}
               InputProps={{
                 startAdornment: (
@@ -40,6 +43,17 @@ export default class NoteSearch extends Component {
               search={search}
               onSearch={onSearch}
               categories={categories}
+              addingInProgress={addingInProgress}
+            />
+            <ImportanceFilter
+              search={search}
+              onSearch={onSearch}
+              addingInProgress={addingInProgress}
+            />
+            <StatusFilter
+              search={search}
+              onSearch={onSearch}
+              addingInProgress={addingInProgress}
             />
           </Toolbar>
         </Container>
