@@ -77,6 +77,7 @@ export default class BasicAppBar extends Component {
         }}
         open={isMenuOpen}
         onClose={this.handleMenuClose}
+        sx={{ color: "red" }}
       >
         <MenuItem onClick={this.handleEditCategories}>
           <EditNoteIcon sx={{ mr: 2 }} />
@@ -102,7 +103,10 @@ export default class BasicAppBar extends Component {
         open={isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem onClick={this.handleAddNote}>
+        <MenuItem
+          onClick={this.handleAddNote}
+          disabled={this.props.addingInProgress}
+        >
           <AddIcon sx={{ mr: 2 }} />
           <p>Add Note</p>
         </MenuItem>
@@ -114,7 +118,11 @@ export default class BasicAppBar extends Component {
     );
 
     return (
-      <AppBar position="static" className="app-bar">
+      <AppBar
+        position="static"
+        className="app-bar"
+        sx={{ backgroundColor: "#4db6ac" }}
+      >
         <Container maxWidth="xl">
           <Toolbar className="toolbar">
             <Typography
@@ -130,6 +138,7 @@ export default class BasicAppBar extends Component {
               variant="outlined"
               startIcon={<AddIcon />}
               sx={{ display: { xs: "none", md: "flex" }, ml: 2 }}
+              disabled={this.props.addingInProgress}
               onClick={this.handleAddNote}
             >
               add note

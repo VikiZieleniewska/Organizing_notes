@@ -18,12 +18,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ErrorIcon from "@mui/icons-material/Error";
-import SquareIcon from "@mui/icons-material/Square";
 import MenuItem from "@mui/material/MenuItem";
+
+import { deepCopy } from "../../helpers/helpers";
 
 export default class NoteCard extends Component {
   state = {
-    note: JSON.parse(JSON.stringify(this.props.note)),
+    note: deepCopy(this.props.note),
     isEditMode: this.props.isEditMode,
     isAddMode: this.props.isEditMode && !this.props.note.id,
   };
@@ -54,6 +55,9 @@ export default class NoteCard extends Component {
     const response = await this.addNoteApi(this.state.note);
     if (response.ok) {
       const newNote = await response.json();
+
+      this.props.onAddNote(newNote);
+
       this.setState({
         note: newNote,
         isEditMode: false,
@@ -65,6 +69,8 @@ export default class NoteCard extends Component {
   handleEditNote = async () => {
     const response = await this.editNoteApi(this.state.note);
     if (response.ok) {
+      this.props.onEditNote(this.state.note);
+
       this.setState({
         isEditMode: false,
         isAddMode: false,
@@ -84,9 +90,7 @@ export default class NoteCard extends Component {
 
   handleCancel = () => {
     this.setState({
-      note: {
-        ...this.props.note,
-      },
+      note: deepCopy(this.props.note),
       isEditMode: false,
     });
 
@@ -97,6 +101,16 @@ export default class NoteCard extends Component {
 
   handleDelete = () => {
     this.props.onDelete(this.props.note.id);
+  };
+
+  shouldDisableSubmit = () => {
+    const titleError = !this.state.note.title.trim();
+    const noTasksError = this.state.note.tasks.length === 0;
+    const someTasksError = this.state.note.tasks.some(
+      (t) => !t.description.trim()
+    );
+
+    return titleError || noTasksError || someTasksError;
   };
 
   render() {
@@ -115,7 +129,11 @@ export default class NoteCard extends Component {
             <CardHeader
               action={
                 <>
-                  <IconButton type="submit" aria-label="save">
+                  <IconButton
+                    type="submit"
+                    aria-label="save"
+                    disabled={this.shouldDisableSubmit()}
+                  >
                     <SaveIcon />
                   </IconButton>
                   <IconButton aria-label="cancel" onClick={this.handleCancel}>
@@ -129,6 +147,10 @@ export default class NoteCard extends Component {
                   variant="standard"
                   fullWidth
                   value={this.state.note.title}
+                  error={!this.state.note.title.trim()}
+                  placeholder={
+                    !this.state.note.title.trim() ? "Title is required" : ""
+                  }
                   onChange={(event) => {
                     this.setState({
                       note: {
@@ -145,6 +167,7 @@ export default class NoteCard extends Component {
                   id="subheader"
                   variant="standard"
                   fullWidth
+                  displayEmpty
                   value={this.state.note.categoryId}
                   onChange={(event) => {
                     this.setState({
@@ -174,7 +197,7 @@ export default class NoteCard extends Component {
                 {this.state.note.tasks.map((task) => (
                   <ListItem
                     disablePadding
-                    key={task.id}
+                    key={`note-${this.state.note.id}-task-${task.id}`}
                     secondaryAction={
                       <IconButton
                         aria-label="delete task"
@@ -225,9 +248,14 @@ export default class NoteCard extends Component {
                     <TextField
                       id={`task-${task.id}`}
                       variant="standard"
-                      // multiline
                       fullWidth
                       value={task.description}
+                      error={!task.description.trim()}
+                      placeholder={
+                        !task.description.trim()
+                          ? "Task description is required"
+                          : ""
+                      }
                       onChange={(event) => {
                         const updatedTasks = [...this.state.note.tasks];
                         updatedTasks.find(

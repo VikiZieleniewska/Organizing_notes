@@ -8,8 +8,14 @@ import "./App.scss";
 
 function App() {
   const [notes, setNotes] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState({
+    searchText: "",
+    selectedCategory: "",
+    importance: "",
+    status: "",
+  });
   const [categories, setCategories] = useState([]);
+  const [addingInProgress, setAddingInProgress] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,17 +54,40 @@ function App() {
       id: 0,
       categoryId: "",
       title: "",
-      tasks: [],
+      tasks: [
+        {
+          id: 1,
+          description: "",
+          isDone: false,
+          isImportant: false,
+        },
+      ],
     };
     setNotes([emptyNote, ...notes]);
+    setAddingInProgress(true);
+  }
+
+  function handleSubmitNote(note) {
+    const index = notes.findIndex((el) => el.id === 0);
+    notes[index] = note;
+
+    setNotes([...notes]);
+    setAddingInProgress(false);
+  }
+
+  function handleEditNote(note) {
+    const index = notes.findIndex((el) => el.id === note.id);
+    notes[index] = note;
+
+    setNotes([...notes]);
   }
 
   function handleUpdateCategories(updatedCategories) {
     setCategories(updatedCategories);
   }
 
-  function handleSearch(searchText) {
-    setSearch(searchText);
+  function handleSearch(searchOptions) {
+    setSearch(searchOptions);
   }
 
   async function handleDelete(noteId) {
@@ -70,6 +99,7 @@ function App() {
 
     if (noteId === 0) {
       setNotes(notes.filter((n) => n.id !== noteId));
+      setAddingInProgress(false);
 
       return;
     }
@@ -92,12 +122,20 @@ function App() {
         categories={categories}
         onUpdateCategories={handleUpdateCategories}
         onAddNote={handleAddNote}
+        addingInProgress={addingInProgress}
       />
-      <NoteSearch search={search} onSearch={handleSearch} />
+      <NoteSearch
+        categories={categories}
+        search={search}
+        onSearch={handleSearch}
+        addingInProgress={addingInProgress}
+      />
       <NotesBoard
         notes={notes}
         categories={categories}
         search={search}
+        onAddNote={handleSubmitNote}
+        onEditNote={handleEditNote}
         onDelete={handleDelete}
       />
     </>
