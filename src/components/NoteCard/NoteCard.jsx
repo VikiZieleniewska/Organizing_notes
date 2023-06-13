@@ -65,6 +65,8 @@ export default class NoteCard extends Component {
   handleEditNote = async () => {
     const response = await this.editNoteApi(this.state.note);
     if (response.ok) {
+      this.props.onEditNote(this.state.note);
+
       this.setState({
         isEditMode: false,
         isAddMode: false,

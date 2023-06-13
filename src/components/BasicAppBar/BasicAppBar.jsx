@@ -77,6 +77,7 @@ export default class BasicAppBar extends Component {
         }}
         open={isMenuOpen}
         onClose={this.handleMenuClose}
+        sx={{ color: "red" }}
       >
         <MenuItem onClick={this.handleEditCategories}>
           <EditNoteIcon sx={{ mr: 2 }} />
@@ -114,7 +115,11 @@ export default class BasicAppBar extends Component {
     );
 
     return (
-      <AppBar position="static" className="app-bar">
+      <AppBar
+        position="static"
+        className="app-bar"
+        sx={{ backgroundColor: "#4db6ac" }}
+      >
         <Container maxWidth="xl">
           <Toolbar className="toolbar">
             <Typography

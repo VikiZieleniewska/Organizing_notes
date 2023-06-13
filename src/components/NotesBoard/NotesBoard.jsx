@@ -6,18 +6,29 @@ import NoteCard from "../NoteCard/NoteCard.jsx";
 
 export default class NotesBoard extends Component {
   render() {
-    const { notes, categories, search, onDelete } = this.props;
+    const { notes, categories, search, onEditNote, onDelete } = this.props;
     if (!notes) {
       return <h1>Notes loading</h1>;
     }
 
-    const filteredNotes = notes.filter(
-      (note) =>
-        note.title.toLowerCase().includes(search.toLowerCase()) ||
-        note.tasks.some((task) =>
-          task.description.toLowerCase().includes(search.toLowerCase())
-        )
-    );
+    let filteredNotes = notes;
+
+    if (search.searchText && search.searchText.trim()) {
+      const searchText = search.searchText.toLowerCase();
+      filteredNotes = filteredNotes.filter(
+        (note) =>
+          note.title.toLowerCase().includes(searchText) ||
+          note.tasks.some((task) =>
+            task.description.toLowerCase().includes(searchText)
+          )
+      );
+    }
+
+    if (search.selectedCategory) {
+      filteredNotes = filteredNotes.filter(
+        (note) => note.categoryId === search.selectedCategory
+      );
+    }
 
     return (
       <Container maxWidth="xl">
@@ -33,6 +44,7 @@ export default class NotesBoard extends Component {
                   note={note}
                   categories={categories}
                   isEditMode={!note.id}
+                  onEditNote={onEditNote}
                   onDelete={onDelete}
                 />
               </Grid>

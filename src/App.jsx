@@ -8,7 +8,10 @@ import "./App.scss";
 
 function App() {
   const [notes, setNotes] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState({
+    searchText: "",
+    selectedCategory: "",
+  });
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -43,6 +46,8 @@ function App() {
     return await response.json();
   }
 
+  // useEffect(() => setSearch({ searchText: "", selectedCategory: "" }));
+
   function handleAddNote() {
     const emptyNote = {
       id: 0,
@@ -53,12 +58,19 @@ function App() {
     setNotes([emptyNote, ...notes]);
   }
 
+  function handleEditNote(note) {
+    const index = notes.findIndex((el) => el.id === note.id);
+    notes[index] = note;
+
+    setNotes([...notes]);
+  }
+
   function handleUpdateCategories(updatedCategories) {
     setCategories(updatedCategories);
   }
 
-  function handleSearch(searchText) {
-    setSearch(searchText);
+  function handleSearch(searchOptions) {
+    setSearch(searchOptions);
   }
 
   async function handleDelete(noteId) {
@@ -93,11 +105,16 @@ function App() {
         onUpdateCategories={handleUpdateCategories}
         onAddNote={handleAddNote}
       />
-      <NoteSearch search={search} onSearch={handleSearch} />
+      <NoteSearch
+        categories={categories}
+        search={search}
+        onSearch={handleSearch}
+      />
       <NotesBoard
         notes={notes}
         categories={categories}
         search={search}
+        onEditNote={handleEditNote}
         onDelete={handleDelete}
       />
     </>
