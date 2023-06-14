@@ -35,8 +35,8 @@ HOME
 http://localhost:3000
 
 Resources
-http://localhost:3000/notes
-http://localhost:3000/categories
+notes: http://localhost:3000/notes
+categories: http://localhost:3000/categories
 
 The page will reload when you make changes.
 
