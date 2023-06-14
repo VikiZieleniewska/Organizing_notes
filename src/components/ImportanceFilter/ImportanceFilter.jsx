@@ -14,7 +14,6 @@ export default class ImportanceFilter extends Component {
         <Select
           id="subheader"
           displayEmpty
-          // sx={{ margin: { xs: "4px 8px", md: "0 0 0 16px" } }}
           sx={{
             margin: { xs: "4px 8px", md: "4px 0 4px 16px" },
             display: {
