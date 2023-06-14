@@ -159,7 +159,6 @@ export default class NoteCard extends Component {
                       },
                     });
                   }}
-                  // sx={{ marginBottom: "20px" }}
                 />
               }
               subheader={
@@ -197,6 +196,7 @@ export default class NoteCard extends Component {
                 {this.state.note.tasks.map((task) => (
                   <ListItem
                     disablePadding
+                    sx={{ mb: 1 }}
                     key={`note-${this.state.note.id}-task-${task.id}`}
                     secondaryAction={
                       <IconButton
@@ -269,7 +269,7 @@ export default class NoteCard extends Component {
                           },
                         });
                       }}
-                      // sx={{ marginBottom: "20px" }}
+                      multiline
                     />
                   </ListItem>
                 ))}

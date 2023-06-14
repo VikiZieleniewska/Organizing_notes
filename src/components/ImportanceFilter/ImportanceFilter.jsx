@@ -14,7 +14,13 @@ export default class ImportanceFilter extends Component {
         <Select
           id="subheader"
           displayEmpty
-          sx={{ ml: 2 }}
+          sx={{
+            margin: { xs: "4px 8px", md: "4px 0 4px 16px" },
+            display: {
+              xs: this.props.showFilters ? "flex" : "none",
+              md: "flex",
+            },
+          }}
           size="small"
           disabled={this.props.addingInProgress}
           value={this.props.search.importance}
